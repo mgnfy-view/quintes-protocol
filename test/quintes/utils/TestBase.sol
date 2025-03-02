@@ -17,7 +17,7 @@ abstract contract TestBase is Test {
 
     Quintes public quintes;
 
-    function setUp() public {
+    function setUp() public virtual {
         owner = makeAddr("owner");
         minter = makeAddr("minter");
         user = makeAddr("user");

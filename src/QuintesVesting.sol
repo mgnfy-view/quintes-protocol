@@ -22,7 +22,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
     /// @dev The quintes token contract address.
-    address private immutable s_quintes;
+    address private immutable i_quintes;
     /// @dev Vesting schedule identifiers.
     EnumerableSet.Bytes32Set private s_vestingScheduleIds;
     /// @dev Map from vesting schedule id to vesting schedule.
@@ -34,10 +34,11 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
 
     /// @dev Constructor that initializes the vesting contract with the Quintes token address.
     /// @param _quintes The address of the Quintes token contract.
-    constructor(address _quintes) Ownable(msg.sender) {
+    /// @param _owner The initial owner address.
+    constructor(address _quintes, address _owner) Ownable(_owner) {
         Utils.requireNotAddressZero(_quintes);
 
-        s_quintes = _quintes;
+        i_quintes = _quintes;
     }
 
     /// @dev Creates a new vesting schedule for a beneficiary.
@@ -66,7 +67,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
         if (_cliff > _duration) revert QuintesVesting__InvalidCliff();
 
         // transfer tokens in for vesting
-        IERC20(s_quintes).safeTransferFrom(msg.sender, address(this), _totalAmount);
+        IERC20(i_quintes).safeTransferFrom(msg.sender, address(this), _totalAmount);
 
         // Create a unique Id for the vesting schedule
         bytes32 vestingScheduleId =
@@ -112,7 +113,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
         vestingSchedule.releasedAmount += vestedAmount;
 
         // Transfer the tokens to the beneficiary
-        IERC20(s_quintes).safeTransfer(vestingSchedule.beneficiary, vestedAmount);
+        IERC20(i_quintes).safeTransfer(vestingSchedule.beneficiary, vestedAmount);
 
         emit TokensReleased(_vestingScheduleId, vestingSchedule.beneficiary, vestedAmount);
     }
@@ -132,7 +133,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
         if (releasableAmount > 0) {
             vestingSchedule.releasedAmount += releasableAmount;
 
-            IERC20(s_quintes).safeTransfer(vestingSchedule.beneficiary, releasableAmount);
+            IERC20(i_quintes).safeTransfer(vestingSchedule.beneficiary, releasableAmount);
 
             emit TokensReleased(_vestingScheduleId, vestingSchedule.beneficiary, releasableAmount);
         }
@@ -145,7 +146,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
 
         // Return the revoked tokens to the owner
         if (revokedAmount > 0) {
-            IERC20(s_quintes).safeTransfer(owner(), revokedAmount);
+            IERC20(i_quintes).safeTransfer(owner(), revokedAmount);
         }
 
         emit VestingScheduleRevoked(_vestingScheduleId, vestingSchedule.beneficiary, revokedAmount);
@@ -154,7 +155,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
     /// @notice Returns the Quintes token contract address.
     /// @return The Quintes token contract address.
     function getQuintesToken() external view returns (address) {
-        return s_quintes;
+        return i_quintes;
     }
 
     /// @dev Returns the total amount of vesting schedules.
