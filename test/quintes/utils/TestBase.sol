@@ -40,5 +40,10 @@ abstract contract TestBase is Test {
         quintes.grantRole(quintes.getBurnerRole(), owner);
         quintes.grantRole(quintes.getMinterRole(), minter);
         vm.stopPrank();
+
+        vm.label(owner, "Owner");
+        vm.label(minter, "Minter");
+        vm.label(user, "User");
+        vm.label(address(quintes), "QuintesToken");
     }
 }
