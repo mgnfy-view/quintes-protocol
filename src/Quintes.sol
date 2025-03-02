@@ -56,14 +56,14 @@ contract Quintes is Initializable, AccessControlUpgradeable, PausableUpgradeable
 
     /// @notice Allows a user with the minter role to mint tokens to the specified address.
     /// @dev Only callabe when the contract isn't previously paused.
-    function mint(address _to, uint256 _amount) external onlyRole(MINTER_ROLE) whenNotPaused {
+    function mint(address _to, uint256 _amount) external onlyRole(MINTER_ROLE) {
         _mint(_to, _amount);
     }
 
     /// @notice Allows a user with the burner role to burn tokens from the specified address.
     /// @param _from The user address to burn tokens from.
     /// @param _amount The amount of tokens to burn.
-    function burn(address _from, uint256 _amount) external onlyRole(BURNER_ROLE) whenNotPaused {
+    function burn(address _from, uint256 _amount) external onlyRole(BURNER_ROLE) {
         _burn(_from, _amount);
     }
 

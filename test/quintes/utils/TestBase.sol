@@ -9,6 +9,7 @@ import { Quintes } from "@src/Quintes.sol";
 abstract contract TestBase is Test {
     address public owner;
     address public minter;
+    address public user;
 
     string public name;
     string public symbol;
@@ -19,6 +20,7 @@ abstract contract TestBase is Test {
     function setUp() public {
         owner = makeAddr("owner");
         minter = makeAddr("minter");
+        user = makeAddr("user");
 
         name = "Quintes";
         symbol = "QTS";
