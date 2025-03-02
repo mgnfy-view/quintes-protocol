@@ -3,7 +3,7 @@ pragma solidity ^0.8.25;
 
 import { Initializable } from "@openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
 
-import { TestBase } from "./utils/TestBase.sol";
+import { TestBase } from "@test/quintes/utils/TestBase.sol";
 
 contract InitializationTest is TestBase {
     function test_checkInitialization() external view {

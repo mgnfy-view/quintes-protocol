@@ -3,7 +3,7 @@ pragma solidity ^0.8.25;
 
 import { IAccessControl } from "@openzeppelin-contracts/access/IAccessControl.sol";
 
-import { TestBase } from "./utils/TestBase.sol";
+import { TestBase } from "@test/quintes/utils/TestBase.sol";
 
 contract RoleManagementTest is TestBase {
     function test_checkRoleAssignment() external view {

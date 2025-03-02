@@ -3,8 +3,8 @@ pragma solidity ^0.8.25;
 
 import { IAccessControl } from "@openzeppelin-contracts/access/IAccessControl.sol";
 
-import { TestBase } from "./utils/TestBase.sol";
 import { PausableUpgradeable } from "@openzeppelin-contracts-upgradeable/utils/PausableUpgradeable.sol";
+import { TestBase } from "@test/quintes/utils/TestBase.sol";
 
 contract PauseAndUnpauseTest is TestBase {
     function test_pauserCanPause() public {
