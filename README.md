@@ -9,7 +9,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/mgnfy-view/foundry-starter-template">
+  <!-- <a href="https://github.com/mgnfy-view/quintes-protocol">
     <img src="assets/icon.svg" alt="Logo" width="80" height="80">
   </a> -->
 
@@ -18,9 +18,9 @@
   <p align="center">
     Description
     <br />
-    <a href="https://github.com/mgnfy-view/foundry-starter-template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/mgnfy-view/quintes-protocol/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/mgnfy-view/foundry-starter-template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/mgnfy-view/quintes-protocol/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -52,7 +52,11 @@
 
 ## About The Project
 
-Project description goes here.
+Quintes is a DeFi protocol with advanced risk controls delivering secured stabled yields — designed for institutions and retail investors seeking ethical, stable returns backed by an international patent.
+
+Quintes protocol redefines yield generation with its over-collateralized, yield-bearing token, QNT. By leveraging proprietary cryptonomics, prediction modelling, and high-frequency trading (HFT) strategies such as asymmetric arbitrage across exchanges, the protocol generates sustainable returns for holders.
+
+Quintes’ core mechanics have undergone rigorous simulation stress testing to evaluate performance under different market scenarios. The project represents over two years of research and development, led by former executives from Binance, Aave, and Morgan Stanley, with extensive senior-level traditional finance experience.
 
 ### Built With
 
@@ -65,20 +69,20 @@ Project description goes here.
 
 ### Prerequisites
 
--
+Make sure you have git, rust, foundry, and make installed and configured on your system.
 
 ### Installation
 
 Clone the repo,
 
 ```shell
-git clone https://github.com/mgnfy-view/foundry-starter-template.git
+git clone https://github.com/mgnfy-view/quintes-protocol.git
 ```
 
 cd into the repo, and install the necessary dependencies
 
 ```shell
-cd foundry-starter-template
+cd quintes-protocol
 forge build
 ```
 
@@ -94,11 +98,12 @@ That's it, you are good to go now!
 
 ## Roadmap
 
--   [ ] Smart contract development
--   [ ] Unit tests
--   [ ] Write a good README.md
+-   [x] Smart contract development
+-   [x] Unit tests
+-   [x] Write a good README.md
+-   [x] Base mainnet deployment (check the [broadcast](./broadcast/) folder)
 
-See the [open issues](https://github.com/mgnfy-view/foundry-starter-template/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/mgnfy-view/quintes-protocol/issues) for a full list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
@@ -132,14 +137,14 @@ Here's a gateway to all my socials, don't forget to hit me up!
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/mgnfy-view/foundry-starter-template.svg?style=for-the-badge
-[contributors-url]: https://github.com/mgnfy-view/foundry-starter-template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/mgnfy-view/foundry-starter-template.svg?style=for-the-badge
-[forks-url]: https://github.com/mgnfy-view/foundry-starter-template/network/members
-[stars-shield]: https://img.shields.io/github/stars/mgnfy-view/foundry-starter-template.svg?style=for-the-badge
-[stars-url]: https://github.com/mgnfy-view/foundry-starter-template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/mgnfy-view/foundry-starter-template.svg?style=for-the-badge
-[issues-url]: https://github.com/mgnfy-view/foundry-starter-template/issues
-[license-shield]: https://img.shields.io/github/license/mgnfy-view/foundry-starter-template.svg?style=for-the-badge
-[license-url]: https://github.com/mgnfy-view/foundry-starter-template/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/mgnfy-view/quintes-protocol.svg?style=for-the-badge
+[contributors-url]: https://github.com/mgnfy-view/quintes-protocol/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/mgnfy-view/quintes-protocol.svg?style=for-the-badge
+[forks-url]: https://github.com/mgnfy-view/quintes-protocol/network/members
+[stars-shield]: https://img.shields.io/github/stars/mgnfy-view/quintes-protocol.svg?style=for-the-badge
+[stars-url]: https://github.com/mgnfy-view/quintes-protocol/stargazers
+[issues-shield]: https://img.shields.io/github/issues/mgnfy-view/quintes-protocol.svg?style=for-the-badge
+[issues-url]: https://github.com/mgnfy-view/quintes-protocol/issues
+[license-shield]: https://img.shields.io/github/license/mgnfy-view/quintes-protocol.svg?style=for-the-badge
+[license-url]: https://github.com/mgnfy-view/quintes-protocol/blob/master/LICENSE.txt
 [linktree-url]: https://linktr.ee/mgnfy.view

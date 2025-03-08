@@ -14,7 +14,7 @@ compile :; forge compile
 
 build :; forge build
 
-test :; forge test
+test-forge :; forge test
 
 snapshot :; forge snapshot
 
