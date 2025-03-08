@@ -11,12 +11,26 @@ abstract contract TestBase2 is TestBase {
 
     QuintesVesting public vesting;
 
+    // Sample vesting params
+    uint256 public vestingAmount;
+    uint256 public startTime;
+    uint256 public cliffDuration;
+    uint256 public vestingDuration;
+
     function setUp() public virtual override {
         super.setUp();
 
         user2 = makeAddr("user2");
 
         vesting = new QuintesVesting(address(quintes), owner);
+
+        vestingAmount = 10_000e18;
+        startTime = block.timestamp;
+        cliffDuration = 100 days;
+        vestingDuration = 100 days;
+
+        vm.prank(owner);
+        quintes.approve(address(vesting), initialSupply);
 
         vm.label(user2, "User2");
         vm.label(address(vesting), "QuintesVesting");
@@ -50,5 +64,10 @@ abstract contract TestBase2 is TestBase {
     {
         vm.prank(owner);
         return vesting.createVestingSchedule(_beneficiary, _start, _cliff, _duration, _totalAmount, _isRevocable);
+    }
+
+    function _revoke(bytes32 _vestingScheduleId) internal {
+        vm.prank(owner);
+        vesting.revoke(_vestingScheduleId);
     }
 }

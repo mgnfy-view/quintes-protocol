@@ -138,10 +138,7 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
             emit TokensReleased(_vestingScheduleId, vestingSchedule.beneficiary, releasableAmount);
         }
 
-        // Mark the schedule as revoked
         vestingSchedule.revoked = true;
-
-        // Update the total vested tokens
         s_totalVestedTokens -= revokedAmount;
 
         // Return the revoked tokens to the owner
@@ -252,12 +249,13 @@ contract QuintesVesting is Ownable, ReentrancyGuard, IQuintesVesting {
     {
         if (_timestamp < _vestingSchedule.cliff) {
             return 0;
-        } else if (_timestamp >= _vestingSchedule.start + _vestingSchedule.duration) {
+        } else if (_timestamp >= _vestingSchedule.cliff + _vestingSchedule.duration) {
             return _vestingSchedule.totalAmount;
         } else {
             uint256 timeFromStart = _timestamp - _vestingSchedule.start;
 
-            return (_vestingSchedule.totalAmount * timeFromStart) / _vestingSchedule.duration;
+            return (_vestingSchedule.totalAmount * timeFromStart)
+                / (_vestingSchedule.duration + (_vestingSchedule.cliff - _vestingSchedule.start));
         }
     }
 }

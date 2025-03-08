@@ -11,26 +11,41 @@ import { Utils } from "@src/utils/Utils.sol";
 import { TestBase2 } from "@test/vesting/utils/TestBase2.sol";
 
 contract CreateVestingTest is TestBase2 {
-    uint256 public vestingAmount;
-    uint256 public startTime;
-    uint256 public cliffDuration;
-    uint256 public vestingDuration;
-
-    function setUp() public override {
-        super.setUp();
-
-        vestingAmount = 10_000 ether;
-        startTime = 1_000;
-        cliffDuration = 365 days;
-        vestingDuration = 730 days;
-
-        vm.prank(owner);
-        quintes.approve(address(vesting), initialSupply);
+    function test_onlyOwnerCanCreateVestingSchedule() external {
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
+        vm.prank(user);
+        vesting.createVestingSchedule(user, startTime, cliffDuration, vestingDuration, vestingAmount, false);
     }
 
-    function test_createVestingScheduleSucceedsAndEmitsEvent() external {
-        vm.warp(startTime);
+    function test_cannotCreateScheduleWithBeneficiaryAddressZero() external {
+        vm.expectRevert(Utils.Utils__AddressZero.selector);
+        _createVestingSchedule(address(0), startTime, cliffDuration, vestingDuration, vestingAmount, false);
+    }
 
+    function test_cannotCreateScheduleWithZeroDuration() external {
+        vm.expectRevert(Utils.Utils__ValueZero.selector);
+        _createVestingSchedule(user, startTime, cliffDuration, 0, vestingAmount, false);
+    }
+
+    function test_cannotCreateScheduleWithZeroAmount() external {
+        vm.expectRevert(Utils.Utils__ValueZero.selector);
+        _createVestingSchedule(user, startTime, cliffDuration, vestingDuration, 0, false);
+    }
+
+    function test_cannotCreateScheduleWithCliffGreaterThanDuration() external {
+        vm.expectRevert(IQuintesVesting.QuintesVesting__InvalidCliff.selector);
+        _createVestingSchedule(user, startTime, vestingDuration + 1, vestingDuration, vestingAmount, false);
+    }
+
+    function test_createScheduleInsufficientTokens() external {
+        vm.prank(owner);
+        quintes.approve(address(vesting), vestingAmount - 1);
+
+        vm.expectRevert();
+        _createVestingSchedule(user, startTime, cliffDuration, vestingDuration, vestingAmount, false);
+    }
+
+    function test_creatingVestingScheduleSucceedsAndEmitsEvent() external {
         bool isRevocable = false;
         bytes32 expectedScheduleId =
             _calculateVestingScheduleId(user, startTime, cliffDuration, vestingDuration, vestingAmount, startTime);
@@ -62,35 +77,7 @@ contract CreateVestingTest is TestBase2 {
         assertEq(quintes.balanceOf(address(vesting)), vestingAmount);
     }
 
-    function test_onlyOwnerCanCreateVestingSchedule() external {
-        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, user));
-        vm.prank(user);
-        vesting.createVestingSchedule(user, startTime, cliffDuration, vestingDuration, vestingAmount, false);
-    }
-
-    function test_cannotCreateScheduleWithZeroAddress() external {
-        vm.expectRevert(Utils.Utils__AddressZero.selector);
-        _createVestingSchedule(address(0), startTime, cliffDuration, vestingDuration, vestingAmount, false);
-    }
-
-    function test_cannotCreateScheduleWithZeroDuration() external {
-        vm.expectRevert(Utils.Utils__ValueZero.selector);
-        _createVestingSchedule(user, startTime, cliffDuration, 0, vestingAmount, false);
-    }
-
-    function test_cannotCreateScheduleWithZeroAmount() external {
-        vm.expectRevert(Utils.Utils__ValueZero.selector);
-        _createVestingSchedule(user, startTime, cliffDuration, vestingDuration, 0, false);
-    }
-
-    function test_cannotCreateScheduleWithCliffGreaterThanDuration() external {
-        vm.expectRevert(IQuintesVesting.QuintesVesting__InvalidCliff.selector);
-        _createVestingSchedule(user, startTime, vestingDuration + 1, vestingDuration, vestingAmount, false);
-    }
-
-    function test_createMultipleVestingSchedules() external {
-        vm.warp(startTime);
-
+    function test_creatingMultipleVestingSchedulesSucceeds() external {
         bool isRevocable = false;
 
         bytes32 scheduleId1 =
@@ -101,7 +88,8 @@ contract CreateVestingTest is TestBase2 {
         uint256 duration2 = vestingDuration * 2;
         uint256 amount2 = vestingAmount / 2;
 
-        vm.warp(startTime + 10);
+        uint256 warpBy = 1 minutes;
+        skip(warpBy);
 
         bytes32 scheduleId2 = _createVestingSchedule(user2, start2, cliff2, duration2, amount2, isRevocable);
 
@@ -115,14 +103,13 @@ contract CreateVestingTest is TestBase2 {
         assertEq(quintes.balanceOf(address(vesting)), vestingAmount + amount2);
     }
 
-    function test_createMultipleSchedulesForSameBeneficiary() external {
-        vm.warp(startTime);
-
+    function test_creatingMultipleSchedulesForSameBeneficiarySucceeds() external {
         bool isRevocable = false;
 
         _createVestingSchedule(user, startTime, cliffDuration, vestingDuration, vestingAmount, isRevocable);
 
-        vm.warp(startTime + 10);
+        uint256 warpBy = 1 minutes;
+        skip(warpBy);
 
         _createVestingSchedule(
             user, startTime + 100, cliffDuration / 2, vestingDuration * 2, vestingAmount / 2, isRevocable
@@ -131,13 +118,5 @@ contract CreateVestingTest is TestBase2 {
         assertEq(vesting.getVestingSchedulesCount(), 2);
         assertEq(vesting.getVestingSchedulesForBeneficiary(user).length, 2);
         assertEq(vesting.getTotalVestedTokens(), vestingAmount + (vestingAmount / 2));
-    }
-
-    function test_createScheduleInsufficientTokens() external {
-        vm.prank(owner);
-        quintes.approve(address(vesting), vestingAmount - 1);
-
-        vm.expectRevert();
-        _createVestingSchedule(user, startTime, cliffDuration, vestingDuration, vestingAmount, false);
     }
 }
