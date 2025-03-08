@@ -13,10 +13,10 @@
     <img src="assets/icon.svg" alt="Logo" width="80" height="80">
   </a> -->
 
-  <h3 align="center">Project Name</h3>
+  <h3 align="center">Quintes Protocol</h3>
 
   <p align="center">
-    Description
+    Quintes is a DeFi protocol with advanced risk controls delivering secured stabled yields
     <br />
     <a href="https://github.com/mgnfy-view/quintes-protocol/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
