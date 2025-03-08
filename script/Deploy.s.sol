@@ -21,12 +21,14 @@ contract Deploy is Script {
         name = "Quintes";
         symbol = "QTS";
 
-        owner = address(7);
+        owner = 0xd9c5ee55812e5e1c6035b52887CCE46915156E4E;
 
-        initialSupply = 1_000_000_000e18;
+        initialSupply = 100_000_000_000e18;
     }
 
     function run() public returns (Quintes, QuintesVesting) {
+        vm.startBroadcast();
+
         Quintes implementation = new Quintes();
         TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
             address(implementation),
@@ -36,6 +38,8 @@ contract Deploy is Script {
         Quintes quintes = Quintes(address(proxy));
 
         QuintesVesting vesting = new QuintesVesting(address(quintes), owner);
+
+        vm.stopBroadcast();
 
         return (quintes, vesting);
     }
